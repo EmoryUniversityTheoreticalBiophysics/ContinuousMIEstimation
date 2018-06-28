@@ -51,7 +51,7 @@ MIs - a cell array, with length(listSplitSizes) rows. Each row contains
 mutual information data from a different subsample (see description of 
 listSplitSizes). There are two columns - the first entry contain the
 SplitSize, the number of partitions of the data used for that row; the 
-second entry contain the estimated mutual informations in bits for each of 
+second entry contain the estimated mutual informations for each of 
 SplitSize partitions of the data.
 
 %}
@@ -73,7 +73,7 @@ for i = 1:n
     %randomly permute the data to assign it at random to one of partitions
     a = randperm(length(X)); 
     nSplits = listSplitSizes(i); %number of partitions the data is split into
-    l = round(linspace(0,length(X),nSplits + 1));
+    l = round(linspace(0,length(X),k + 1));
     
     MI_T = zeros(nSplits,1); %a temporary variable to hold the different 
                 %mutual information values for each data partition
@@ -84,14 +84,17 @@ for i = 1:n
         MI_T(j) = MIxnyn(xT,yT,kvalue); %call the KSG MI estimator function
     end
     MIs{i,2} = MI_T./log(2); %we need this log(2) to convert from nats to bits.
-    means(i) = mean(MIs{i,2}); %mean value of MIs of partitions of this size
-    errorBars(i) = std(MIs{i,2}); %std.dev. of MIs of partitions of this size
+    means(i) = mean(MIs{i,2});
+    errorBars(i) = std(MIs{i,2});
 end
 
 if do_plot == 1
-    clf
-    errorbar(listSplitSizes./N, means, errorBars)
-    xlabel('1/N')
-    ylabel('Mutual Information, bits')
-    title(horzcat('Dependence of Mutual Information on the data set size for k = ', num2str(kvalue)))
+figure
+errorbar(listSplitSizes./N, means, errorBars)
+xlabel('1/N')
+ylabel('mutual information, in bits')
+title(horzcat('mutual information dependence on N, for k = ', num2str(kvalue)))
+end
+
+
 end

@@ -31,7 +31,7 @@ function [errorEstimate] = findMI_KSG_stddev(MIs, N, do_plot)
 function [errorEstimate] = findMI_KSG_stddev(MIs, N, do_plot)
 
 MIs - the output from findMI_KSG_subsampling. Cell array; see detailed 
-description in findMI_KSG_subsampling, values in bits.
+description in findMI_KSG_subsampling.
 
 N - scalar, total size of the data set: how many data points were there 
 in the original X and Y variables, for which we are estimating I(X;Y)?
@@ -40,7 +40,7 @@ do_plot -- binary scalar. If 1, plots for estimation of MI error bars will
 automatically be generated.
 
 errorEstimate - a scalar, the estimate of the standard deviation of the KSG
-mutual information estimator, in bits, at the full data set size N
+mutual information estimator at the full data set size N
 %}
 
 Divisions = MIs(:,1);  % the list of partition sizes; corresponds to 
@@ -96,18 +96,21 @@ stdvar = sqrt(varS/N^2); %the error bars on our estimate of the variance
 
 
 if do_plot == 1   
-    clf
-    hold on
-    plot(Xvals, listVariances, 'x')
-    plot(Xs,Ys)
+    figure
+hold on
+plot(Xvals, listVariances, 'x')
+plot(Xs,Ys)
 
-    plot(xActual, variancePredicted, 'ks','MarkerFaceColor','k') %draws the projected point
-    plot([xActual xActual], [variancePredicted - stdvar, variancePredicted + stdvar],'k-')
+plot(xActual, variancePredicted, 'ks','MarkerFaceColor','k') %draws the projected point
+plot([xActual xActual], [variancePredicted - stdvar, variancePredicted + stdvar],'k-')
 
-    ax = gca;
-    ax.XScale = 'log';
-    ax.YScale = 'log';
-    xlim([min(Xs) max(Xs)]);
+ax = gca;
+ax.XScale = 'log';
+ax.YScale = 'log';
+xlim([min(Xs) max(Xs)]);
+
 end
 
 errorEstimate = variancePredicted^.5;
+
+end

@@ -35,19 +35,20 @@ Gaussians we can calculate the mutual information analytically, this
 example allows us to compare the estimates with true information values. 
 
 This function will iterates across values of 'k' and plots an equivalant
-to Fig. 2 (estimation of error bars) at each k. It also outputs the 
-dependence of the estimated mutual information on k.
+to Fig. 2 at each k. It will also output the dependence of the estimated
+mutual information on the value of k.
 %}
 
 close all;
 
+numPoints = 200;
+muX = 0;
+muY = 0;
+sigmaX = 1;
+sigmaY = 1;
+correlation  = 0.5;
 
-numPoints = 200; %how many samples to generate
-muX = 0;         %X mean of the bivariate gaussian
-muY = 0;         %Y mean of the bivariate gaussian
-sigmaX = 1;      %X standard deviation   
-sigmaY = 1;      %Y standard deviation
-correlation  = 0.5; %correlation coefficient of the bivariate gaussian
+
 
 %generate a correlated X and Y
 x1 = normrnd(0, 1, numPoints, 1);
@@ -61,14 +62,16 @@ disp(horzcat('correlation = ', num2str(correlation)))
 
 
 %calculate actual expected mutual information between X and Y
-mutualInformation_analytical = - 1/2* log2(1-correlation^2);
-disp(horzcat('Analytical value of the mutual information = ', num2str(mutualInformation_analytical),' bits'))
+mutualInformation_analytical = log2((1/(1-correlation^2)).^.5);
+disp(horzcat('analytical value of the mutual information = ', num2str(mutualInformation_analytical),' bits'))
 
 
-%now we will do the estimates. This will generate quite a lot of plots.
-listOfKs = [1 2 3 4 5 7 10 15 20]; %values of k in k-nearest neighbors to try
-listSplitSizes = [1 2 3 4 5 6 7 8 9 10]; %list of partitionings of data to try
+%now we will do the estimate - we call this fucntion but it will call the
+%others. This will generate quite a lot of plots.
+listOfKs = [1 2 3 4 5 7 10 15 20];
+listSplitSizes = [1 2 3 4 5 6 7 8 9 10];
 [values, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, 1, 1, 1);
-disp(horzcat('The values of k used are ', num2str(listOfKs)))
-disp(horzcat('Estimated values of mutual information at different k"s are ', num2str(values'), ' and standard deviations are ', num2str(errorBars')))
+%[values, errorBars] = mutualInformation_twoContDistributions_check_k_dependence(X,Y,listOfKs, listSplitSizes);
+disp(horzcat('estimated values of mutual information at different k"s are ', num2str(values'), ' and standard deviations are ', num2str(errorBars')))
+disp(horzcat('the values of k used are ', num2str(listOfKs)))
  

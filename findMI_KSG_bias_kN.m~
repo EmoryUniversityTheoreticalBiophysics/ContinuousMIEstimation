@@ -69,13 +69,15 @@ for i = 1:length(listOfKs) %for each k value, find the values of the information
 end
 
 
-%plot the obtained values to see the relationship between k and N on the 
-%one hand and the estimates of the information on the other 
+%plot the obtained val this to see the relationship between k, N, and the estimates of the
+%information. 
 
 if do_plot == 1
-    figure
-    errorbar(listOfKs, means, errorBars)
-    xlabel('k')
-    ylabel('mutual information, bits')
-    title('Mutual Information different k values')
+figure
+errorbar(listOfKs, means, errorBars)
+xlabel('k')
+ylabel('mutual information, in bits')
+title('mutual information across k values')
+end
+
 end

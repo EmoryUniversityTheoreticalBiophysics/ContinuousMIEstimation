@@ -55,4 +55,4 @@ end
 
 listPositions = listPositions-mean(listPositions);
 listPositions = 2.*listPositions./(length(listPositions));
-transformedValues = erfinv(listPositions);
+transformedValues = sqrt(2)*erfinv(listPositions);

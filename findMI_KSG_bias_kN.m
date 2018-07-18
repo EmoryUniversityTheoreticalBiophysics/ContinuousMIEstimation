@@ -1,3 +1,33 @@
+function [means, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, do_plot, do_plot_stddev, do_plot_subsampling)
+
+% uses KSG k-nearest neighbors mutual information estimator at various values
+% of k, allowing to select the best k
+% 
+% X,Y - continuous variables - should each be given as matrices, so that
+% each row corresponds to a single data point, and each column to a
+% different dimension. These *must* be the same length as each other
+% 
+% listOfKs - vector of integers, the list of different values of k in the 
+% k-nearest neighbors KSG estimator to try. 
+% 
+% listSplitSizes - list of paritioning of the data to be used for errror bars
+% calculations; see detailed description in findMI_KSG_subsampling.m 
+% 
+% means - values of estimated I(X;Y), in bits, at each k value in listOfKs.
+% Vector of the same dimension as listOfKs.
+% 
+% errorBars - errors for the estimated values of I(X;Y) at each k, in bits.
+% Vector of the same dimension as listOfKs.
+% 
+% do_plot - binary scalar. If 1, plots of dependence of MI estimated values 
+% on k will automatically be generated.
+% 
+% do_plot_stddev, do_plot_subsampling -- binary scalars, are passed directly 
+% to findMI_KSG_stddev and findMI_KSG_subsampling and control generation of
+% figures in these function; see documentation for these function
+
+
+%-----------------------------------------------------------------------------------------
 % Copyright 2018 Caroline Holmes, Ilya Nemenman
 %-----------------------------------------------------------------------------------------
 % This program is free software: you can redistribute it and/or modify
@@ -25,40 +55,9 @@
 %
 % in your published research.
 
-
-function [means, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, do_plot, do_plot_stddev, do_plot_subsampling)
-%{
-function [means, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, do_plot, do_plot_stddev, do_plot_subsampling)
-
-uses KSG k-nearest neighbors mutual information estimator at various values
-of k, allowing to select the best k
-
-X,Y - continuous 1-d variables - should each be given as vectors. These
-*must* be the same length as each other
-
-listOfKs - vector of integers, the list of different values of k in the 
-k-nearest neighbors KSG estimator to try. 
-
-listSplitSizes - list of paritioning of the data to be used for errror bars
-calculations; see detailed description in findMI_KSG_subsampling.m 
-
-means - values of estimated I(X;Y), in bits, at each k value in listOfKs.
-Vector of the same dimension as listOfKs.
-
-errorBars - errors for the estimated values of I(X;Y) at each k, in bits.
-Vector of the same dimension as listOfKs.
-
-do_plot - binary scalar. If 1, plots of dependence of MI estimated values 
-on k will automatically be generated.
-
-do_plot_stddev, do_plot_subsampling -- binary scalars, are passed directly 
-to findMI_KSG_stddev and findMI_KSG_subsampling and control generation of
-figures in these function; see documentation for these function
-%}
-
 means = zeros(length(listOfKs),1); %the estimated value of the mutual 
-                    %information at each k, buts
-errorBars = zeros(length(listOfKs),1); %the errorbars at each k, bits
+                    %information at each k, in bits
+errorBars = zeros(length(listOfKs),1); %the errorbars at each k, in bits
 N = length(X);      %We do not check that X and Y are of the same size; 
         % this is done by MIxnyn
 

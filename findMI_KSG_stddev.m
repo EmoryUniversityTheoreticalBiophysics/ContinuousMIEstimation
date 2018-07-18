@@ -130,6 +130,13 @@ if do_plot == 1
     ax.XScale = 'log';
     ax.YScale = 'log';
     xlim([min(Xs) max(Xs)]);
+    
+    xlabel('1/N')
+    ylabel('Variance of MI, in bits')
+    
+    title('Estimating error bars')
+    
+    legend('Variances from splitting data', '1/N scaling fit to variances from split data','Estimated variance for full data size')
 end
 
 errorEstimate = variancePredicted^.5;

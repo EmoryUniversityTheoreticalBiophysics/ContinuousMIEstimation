@@ -118,7 +118,7 @@ for i = 1:n
 end
 
 if do_plot == 1
-    clf
+    figure
     errorbar(listSplitSizes./N, means, errorBars)
     xlabel('1/N')
     ylabel('Mutual Information, bits')

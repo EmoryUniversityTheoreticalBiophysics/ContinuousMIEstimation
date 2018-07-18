@@ -27,25 +27,50 @@
 
 
 function [errorEstimate] = findMI_KSG_stddev(MIs, N, do_plot)
-%{
-function [errorEstimate] = findMI_KSG_stddev(MIs, N, do_plot)
+% function [errorEstimate] = findMI_KSG_stddev(MIs, N, do_plot)
+% 
+% MIs - the output from findMI_KSG_subsampling. Cell array; see detailed 
+% description in findMI_KSG_subsampling, values in bits.
+% 
+% N - scalar, total size of the data set: how many data points were there 
+% in the original X and Y variables, for which we are estimating I(X;Y)?
+% 
+% do_plot -- binary scalar. If 1, plots for estimation of MI error bars will 
+% automatically be generated.
+% 
+% errorEstimate - a scalar, the estimate of the standard deviation of the KSG
+% mutual information estimator, in bits, at the full data set size N
 
-MIs - the output from findMI_KSG_subsampling. Cell array; see detailed 
-description in findMI_KSG_subsampling, values in bits.
+%-----------------------------------------------------------------------------------------
+% Copyright 2018 Caroline Holmes, Ilya Nemenman
+%-----------------------------------------------------------------------------------------
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should receive a copy of the GNU General Public License
+% along with this program.  See also <http://www.gnu.org/licenses/>.
+%-----------------------------------------------------------------------------------------
+% Please reference
+% 
+% Holmes, C.M. & Nemenman, I.  Estimation of mutual information for
+% real-valued data with error bars and controlled bias. 
+% Submitted, 2018.
+%
+% A. Kraskov, H. Stogbauer, and P. Grassberger,
+% Estimating mutual information.
+% Phys. Rev. E 69 (6) 066138, 2004
+%
+% in your published research.
 
-N - scalar, total size of the data set: how many data points were there 
-in the original X and Y variables, for which we are estimating I(X;Y)?
-
-do_plot -- binary scalar. If 1, plots for estimation of MI error bars will 
-automatically be generated.
-
-errorEstimate - a scalar, the estimate of the standard deviation of the KSG
-mutual information estimator, in bits, at the full data set size N
-%}
-
-Divisions = MIs(:,1);  % the list of partition sizes; corresponds to 
-            %'listSplitSizes' in other functions in this package
-MIs = MIs(:,2); %now MIs only contains the mutual informations data, and not
+listSplitSizes = MIs(:,1);  % the list of partition sizes
+MIs = MIs(:,2); %now MIs only contains the mutual information data, and not
             %the number of partitions
             
 n = length(MIs); % number of different partition sizes used to partition the
@@ -53,11 +78,8 @@ n = length(MIs); % number of different partition sizes used to partition the
 
 Nsamples = zeros(n, 1); 
 for i = 1:n
-    Nsamples(i) = floor(N./(Divisions{i,1})); %how many data points were actually in each subset for each partition size
+    Nsamples(i) = floor(N./(listSplitSizes{i,1})); %how many data points were actually in each subset for each partition size
 end
-
-%everything above here should be changed to just be passed from
-%findMI_twoContDistributions
 
 Xvals = 1./Nsamples; %because we want to look at dependence on 1/N, not N. 
 xActual = Xvals(1);  %'actual' meaning with using the entire available data set
@@ -85,18 +107,18 @@ Ys = Xs .* (10^b); %and then we'll plot everything in log space
 
 %The following estimated the error for the actual mutual
 %information. We won't do this by projecting along the fitted line, 
-% but using chi^2 distribution as described in the paper; although the two
+% but using a chi^2 distribution as described in the paper, although the two
 %answers shouldn't be too different. 
 
-k = cell2mat(Divisions(2:end)); %because we can't use the first entry here (Divisions = 1, variance = 1) to help us predict the actual variance. 
-variancePredicted = sum((k-1)./k.*listVariances)./sum((k-1));
+k = cell2mat(listSplitSizes(2:end)); %because we can't use the first entry here (listSplitSizes = 1) to help us predict the actual variance. 
+variancePredicted = sum((k-1)./k.*listVariances)./sum((k-1)); %The estimated variance of the mutual information at the full N
 Sml=variancePredicted*N;
-varS = 2*Sml^2/sum((k-1));
+varS = 2*Sml^2/sum((k-1)); %Estimated variance of the variance of the estimate of the mutual information at full N
 stdvar = sqrt(varS/N^2); %the error bars on our estimate of the variance
 
 
 if do_plot == 1   
-    clf
+    figure
     hold on
     plot(Xvals, listVariances, 'x')
     plot(Xs,Ys)

@@ -27,34 +27,63 @@
 
 
 function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot)
-%{
-function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot)
 
-uses kraskov-grassberger to estimate I(X;Y)
-X,Y - continuous 1-d variables - should each be given as vectors. These
-*must* be the same length as each other
+% function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot)
+% 
+% uses kraskov-grassberger to estimate I(X;Y)
+%
+% X,Y - continuous variables - should each be given as matrices, so that
+% each row corresponds to a single data point, and each column to a
+% different dimension. These *must* be the same length as each other, but
+% do not need to have the same dimensionality.
+%
+% kvalue - scalar, positive integer, number of nearest neighbors to count 
+% when using the KSG estimator.
+% 
+% listSplitSizes - 1-d vector of required partitionings of the data when 
+% looking at the dependence of the mutual information on the data set size. 
+% For example, listSplitSizez = [1,2,3] means that we want to estimate the
+% information from the whole data, then from two non-overlapping subsets of 
+% the data, each of size N/2, and then from three non-obverlapping subsets 
+% each of size N/3. The first element of listSplitSizes should always be 1.
+% 
+% do_plot -- a binary scalar variable. If 1, plots showing dependence of the 
+% mutual information on the sample size will automatically be generated.
+% 
+% MIs - a cell array, with length(listSplitSizes) rows. Each row contains 
+% mutual information data from a different subsample (see description of 
+% listSplitSizes). There are two columns - the first entry contain the
+% SplitSize, the number of partitions of the data used for that row; the 
+% second entry contain the estimated mutual informations in bits for each of 
+% SplitSize partitions of the data.
 
-kvalue - scalar, positive integer, number of nearest neighbors to count 
-when using the KSG estimator.
-
-listSplitSizes - 1-d vector of required partitionings of the data when 
-looking at the dependence of the mutual information on the data set size. 
-For example, listSplitSizez = [1,2,3] means that we want to estimate the
-information from the whole data, then from two non-overlapping subsets of 
-the data, each of size N/2, and then from three non-obverlapping subsets 
-each of size N/3. The first element of listSplitSizes should always be 1.
-
-do_plot -- a binary scalar variable. If 1, plots showing dependence of the 
-mutual information on the sample size will automatically be generated.
-
-MIs - a cell array, with length(listSplitSizes) rows. Each row contains 
-mutual information data from a different subsample (see description of 
-listSplitSizes). There are two columns - the first entry contain the
-SplitSize, the number of partitions of the data used for that row; the 
-second entry contain the estimated mutual informations in bits for each of 
-SplitSize partitions of the data.
-
-%}
+%-----------------------------------------------------------------------------------------
+% Copyright 2018 Caroline Holmes, Ilya Nemenman
+%-----------------------------------------------------------------------------------------
+% This program is free software: you can redistribute it and/or modify
+% it under the terms of the GNU General Public License as published by
+% the Free Software Foundation, either version 3 of the License, or
+% (at your option) any later version.
+%
+% This program is distributed in the hope that it will be useful,
+% but WITHOUT ANY WARRANTY; without even the implied warranty of
+% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+% GNU General Public License for more details.
+%
+% You should receive a copy of the GNU General Public License
+% along with this program.  See also <http://www.gnu.org/licenses/>.
+%-----------------------------------------------------------------------------------------
+% Please reference
+% 
+% Holmes, C.M. & Nemenman, I.  Estimation of mutual information for
+% real-valued data with error bars and controlled bias. 
+% Submitted, 2018.
+%
+% A. Kraskov, H. Stogbauer, and P. Grassberger,
+% Estimating mutual information.
+% Phys. Rev. E 69 (6) 066138, 2004
+%
+% in your published research.
 
 n = length(listSplitSizes); 
 MIs = cell(n,2);

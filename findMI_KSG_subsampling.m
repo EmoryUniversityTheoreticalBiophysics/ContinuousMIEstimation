@@ -1,31 +1,3 @@
-% Copyright 2018 Caroline Holmes, Ilya Nemenman
-%-----------------------------------------------------------------------------------------
-% This program is free software: you can redistribute it and/or modify
-% it under the terms of the GNU General Public License as published by
-% the Free Software Foundation, either version 3 of the License, or
-% (at your option) any later version.
-%
-% This program is distributed in the hope that it will be useful,
-% but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-% GNU General Public License for more details.
-%
-% You should receive a copy of the GNU General Public License
-% along with this program.  See also <http://www.gnu.org/licenses/>.
-%-----------------------------------------------------------------------------------------
-% Please reference
-% 
-% Holmes, C.M. & Nemenman, I.  Estimation of mutual information for
-% real-valued data with error bars and controlled bias. 
-% Submitted, 2018.
-%
-% A. Kraskov, H. Stogbauer, and P. Grassberger,
-% Estimating mutual information.
-% Phys. Rev. E 69 (6) 066138, 2004
-%
-% in your published research.
-
-
 function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot)
 
 % function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot)
@@ -56,7 +28,7 @@ function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot)
 % SplitSize, the number of partitions of the data used for that row; the 
 % second entry contain the estimated mutual informations in bits for each of 
 % SplitSize partitions of the data.
-
+%
 %-----------------------------------------------------------------------------------------
 % Copyright 2018 Caroline Holmes, Ilya Nemenman
 %-----------------------------------------------------------------------------------------

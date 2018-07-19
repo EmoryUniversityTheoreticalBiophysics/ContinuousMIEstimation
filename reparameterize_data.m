@@ -1,3 +1,18 @@
+function [transformedValues] = reparameterize_data(listOfValues)
+
+% function [transformedValues] = reparameterize_data(listOfValues)
+%
+% This function reparamaterizes the data to a standard normal distribution. 
+%
+% listOfValues -- one dimensional real valued array of data. For example, 
+% it could be one of the components of the multidimensional X variable 
+% in our information estimation. This reparamaterization, if being
+% used, should be performed on each dimension independently.
+%
+% This reparamaterization does not change the ordering of the points -
+% instead, it just changes the distances along the axis.
+%
+%-----------------------------------------------------------------------------------------
 % Copyright 2018 Caroline Holmes, Ilya Nemenman
 %-----------------------------------------------------------------------------------------
 % This program is free software: you can redistribute it and/or modify
@@ -24,21 +39,6 @@
 % Phys. Rev. E 69 (6) 066138, 2004
 %
 % in your published research.
-
-
-function [transformedValues] = reparameterize_data(listOfValues)
-
-%function [transformedValues] = reparameterize_data(listOfValues)
-%
-%This function reparamaterizes the data to a standard normal distribution. 
-%
-% listOfValues -- one dimensional real valued array of data. For example, 
-% it could be one of the components of the multidimensional X variable 
-% in our information estimation. This reparamaterization, if being
-% used, should be performed on each dimension independently.
-
-%This reparamaterization does not change the ordering of the points -
-%instead, it just changes the distances along the axis.
 
 
 [A,I] = sort(listOfValues); % data solrted by their values and their index

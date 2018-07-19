@@ -1,5 +1,7 @@
 function [listOfKs, mutualInformationEstimates, errorBars, mutualInformationAnalytical] = gaussianExample(correlation, numPoints)
 
+% function [listOfKs, mutualInformationEstimates, errorBars, mutualInformationAnalytical] = gaussianExample(correlation, numPoints)
+%    
 % This function performs mutual information estimation for correlated Gaussian 
 % data. It generates figures similar to Figs. 2, 3 in (Holmes and Nemenman, 2018)
 % it illustrated how error bars are calculated, and how mutual information
@@ -26,7 +28,6 @@ function [listOfKs, mutualInformationEstimates, errorBars, mutualInformationAnal
 % mutualInformationAnalytical - the analytical value of the mutual
 % information between X and Y, for comparison with the estimates
 %
-
 %-----------------------------------------------------------------------------------------
 % Copyright 2018 Caroline Holmes, Ilya Nemenman
 %-----------------------------------------------------------------------------------------

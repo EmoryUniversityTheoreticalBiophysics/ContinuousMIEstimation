@@ -1,11 +1,14 @@
 function [means, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, do_plot, do_plot_stddev, do_plot_subsampling)
 
+% function [means, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, do_plot, do_plot_stddev, do_plot_subsampling)
+%
 % uses KSG k-nearest neighbors mutual information estimator at various values
 % of k, allowing to select the best k
 % 
 % X,Y - continuous variables - should each be given as matrices, so that
 % each row corresponds to a single data point, and each column to a
-% different dimension. These *must* be the same length as each other
+% different dimension. These *must* be the same length as each other, but
+% do not need to have the same dimensionality.
 % 
 % listOfKs - vector of integers, the list of different values of k in the 
 % k-nearest neighbors KSG estimator to try. 
@@ -25,8 +28,7 @@ function [means, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, d
 % do_plot_stddev, do_plot_subsampling -- binary scalars, are passed directly 
 % to findMI_KSG_stddev and findMI_KSG_subsampling and control generation of
 % figures in these function; see documentation for these function
-
-
+%
 %-----------------------------------------------------------------------------------------
 % Copyright 2018 Caroline Holmes, Ilya Nemenman
 %-----------------------------------------------------------------------------------------

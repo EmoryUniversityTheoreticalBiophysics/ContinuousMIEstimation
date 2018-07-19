@@ -1,32 +1,5 @@
-% Copyright 2018 Caroline Holmes, Ilya Nemenman
-%-----------------------------------------------------------------------------------------
-% This program is free software: you can redistribute it and/or modify
-% it under the terms of the GNU General Public License as published by
-% the Free Software Foundation, either version 3 of the License, or
-% (at your option) any later version.
-%
-% This program is distributed in the hope that it will be useful,
-% but WITHOUT ANY WARRANTY; without even the implied warranty of
-% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-% GNU General Public License for more details.
-%
-% You should receive a copy of the GNU General Public License
-% along with this program.  See also <http://www.gnu.org/licenses/>.
-%-----------------------------------------------------------------------------------------
-% Please reference
-% 
-% Holmes, C.M. & Nemenman, I.  Estimation of mutual information for
-% real-valued data with error bars and controlled bias. 
-% Submitted, 2018.
-%
-% A. Kraskov, H. Stogbauer, and P. Grassberger,
-% Estimating mutual information.
-% Phys. Rev. E 69 (6) 066138, 2004
-%
-% in your published research.
-
-
 function [errorEstimate] = findMI_KSG_stddev(MIs, N, do_plot)
+
 % function [errorEstimate] = findMI_KSG_stddev(MIs, N, do_plot)
 % 
 % MIs - the output from findMI_KSG_subsampling. Cell array; see detailed 
@@ -40,7 +13,7 @@ function [errorEstimate] = findMI_KSG_stddev(MIs, N, do_plot)
 % 
 % errorEstimate - a scalar, the estimate of the standard deviation of the KSG
 % mutual information estimator, in bits, at the full data set size N
-
+%
 %-----------------------------------------------------------------------------------------
 % Copyright 2018 Caroline Holmes, Ilya Nemenman
 %-----------------------------------------------------------------------------------------
@@ -105,10 +78,10 @@ Xs = linspace(xActual./2,max(Xvals), 100);
 Ys = Xs .* (10^b); %and then we'll plot everything in log space
  
 
-%The following estimated the error for the actual mutual
-%information. We won't do this by projecting along the fitted line, 
-% but using a chi^2 distribution as described in the paper, although the two
-%answers shouldn't be too different. 
+%The following estimated the error for the actual mutual information. We
+%won't do this by projecting along the fitted line, but rather using a
+%chi^2 distribution as described in the paper, although the two answers
+%shouldn't be too different.
 
 k = cell2mat(listSplitSizes(2:end)); %because we can't use the first entry here (listSplitSizes = 1) to help us predict the actual variance. 
 variancePredicted = sum((k-1)./k.*listVariances)./sum((k-1)); %The estimated variance of the mutual information at the full N

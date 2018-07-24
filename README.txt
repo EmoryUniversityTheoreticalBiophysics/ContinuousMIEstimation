@@ -50,10 +50,14 @@ using the KSG estimator (see Refs. [2,3]). The files are distributed
 with no change and copyrighted by their original authors. You will need
 to do a few things in this folder before you can use the estimator:
 
-	a. Open the file ‘MIxnyn.m’ in this directory, edit the file
-	    and change '[INSERT PATH HERE]' in the file with the path
-	    to the directory where the current software package is
-	    installed.
+	a. In MatLab command line, execute the following command:
+	      	     setenv('PATH', [getenv('PATH') ':[PACKAGE_PATH]/kraskovStoegbauerGrassberger']);
+            where [PACKAGE PATH] is the path to the directory where
+	    this package was installed (path to the directory
+	    containing this README). This should work on Linux, Mac
+	    and other Unix-based system; path in Windows will require
+	    different syntaxis.
+		     
 	    
 	b. In terminal, navigate to the kraskovGrassberger folder and
 	    compile the code, using something like:
@@ -63,10 +67,28 @@ to do a few things in this folder before you can use the estimator:
 2. The .m files described in the text of Ref. [1]. For examples of how
 to run these files on data, see the ExampleScripts below.
 
-	findMI_KSG_subsampling.m - This function calculates the mutual information between X and Y both for the full data set and for a series of nonoverlapping subsets, and outputs both that information for each of the subsets. This also allows the user to check for sample size dependent bias in the mutual information estimate.
-	findMI_KSG_stddev.m - This function calculates the error bars for the mutual information estimate, using the chi-squared method described in [1], which involves extrapolating from the variances at smaller N’s to the variance at the full sample size. This function takes as an input the outputs of findMI_KSG_subsampling.m. 
-	findMI_KSG_bias_kN.m - This function calls both findMI_KSG_subsampling.m and findMI_KSG_stddev.m. It performs the information estimates at various values of k, allowing the user to check the k-dependence of the mutual information estimate, and outputs the mutual information and error bars for all requested values of k.
-	reparamaterize_data.m - As discussed in Ref. [1], reparamaterizing data to a gaussian can aid in mutual information estimates. This function reparamaterizes the input variable to a gaussian. 
+	findMI_KSG_subsampling.m - This function calculates the mutual
+	   information between X and Y both for the full data set and for
+	   a series of nonoverlapping subsets, and outputs both that
+	   information for each of the subsets. This also allows the user
+	   to check for sample size dependent bias in the mutual
+	  information estimate. 
+	findMI_KSG_stddev.m - This function calculates the error bars
+	   for the mutual information estimate, using the chi-squared
+	   method described in [1], which involves extrapolating from
+	   the variances at smaller N’s to the variance at the full
+	   sample size. This function takes as an input the outputs of
+	   findMI_KSG_subsampling.m.  
+	findMI_KSG_bias_kN.m - This function calls both
+	   findMI_KSG_subsampling.m and findMI_KSG_stddev.m. It
+	   performs the information estimates at various values of k,
+	   allowing the user to check the k-dependence of the mutual
+	   information estimate, and outputs the mutual information
+	   and error bars for all requested values of k. 
+	reparamaterize_data.m - As discussed in Ref. [1],
+	   reparamaterizing data to a gaussian can aid in mutual
+	   information estimates. This function reparamaterizes the
+	   input variable to a gaussian.  
 
 3. A folder titled ‘ExampleScripts’, which contains scripts to perform
 analyses similar to those in the figures of Ref. [1]. In order to run these, all 
@@ -88,12 +110,16 @@ contents of the continuousMIEstimation package should be on the path.
 	    similar to (a) and (b) but with higher dimensional
 	    Gaussian inputs. It is equivalent to Fig. 6 in Ref. [1].
 
-	d. NfkBDataAnalysis.m -- this function performs mutual information estimation on NfkBData.mat. It generates two plots comparing the N-dependence of mutual information estimates with and without reparamaterization. The version with reparamaterization is equivalent to Fig. 7 in Ref. [1]. 
+	d. NfkappaBDataAnalysis.m -- this function performs mutual
+	   information estimation on N-kappaBData.mat. It generates two
+   	   plots comparing the N-dependence of mutual information
+	   estimates with and without reparamaterization. The version
+	   with reparamaterization is equivalent to Fig. 7 in Ref. [1].  
 	
-	e. NfkBData.mat -- this is the data file for data used in
+	e. NfkappaBData.mat -- this is the data file for data used in
             Fig. 7 in Ref. [1]. The data lists single cell NF-kappaB
-            activation (P65 nuclear localization) for in response to
-            dozes of the TNF stimulus. See Ref. [1] and
+            (P65 nuclear localization) and p-ATF-2 activation and in
+            response to a doze of the TNF stimulus. See Ref. [1] and
 
 	    	  Cheong, R., Rhee, A., Wang, C. J., Nemenman, I., &
 	    	  Levchenko, A. (2011). Information transduction

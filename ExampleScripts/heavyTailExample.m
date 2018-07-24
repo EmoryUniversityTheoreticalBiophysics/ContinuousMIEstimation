@@ -1,23 +1,30 @@
-function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, reparamaterizedEstimates, reparamaterizedErrorBars, mutualInformationAnalytical] = heavyTailExample()
+function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, ...
+    reparamaterizedEstimates, reparamaterizedErrorBars, mutualInformationAnalytical] = heavyTailExample()
+% 
+% function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, ...
+%    reparamaterizedEstimates, reparamaterizedErrorBars, mutualInformationAnalytical] = heavyTailExample()
+%
 % This is an example of the effects of reparamaterization, using an extreme
-% case with very heavy-tailed data. This is equivalent to Holmes & Nemenman
-% Fig. 4. Note that the form of the k and N dependence is strongly
-% dependent on exactly which points are generated.
+% case with very heavy-tailed data. This is similar to Ref. [1],
+% Fig. 4. Note that the form of the k and N dependence may depend on 
+% on exactly which sample points are generated -- in long-tailed data, a
+% few outliers can have a dramatic effect.
 %
-% ks - this is the list of k values used
+% Outputs:
+%   ks - this is the list of k values used
 %
-% unreparamaterizedEstimates - this is a vector of the estimated mutual
-% information at the values of k, for the full data set size.
+%   unreparamaterizedEstimates - this is a vector of the estimated mutual
+%   information at the values of k, for the full data set size.
 %
-% unreparamaterizedErrorBars - this is a vector of the estimated error bars
-% for the mutual information estimates stored in unreparamaterizedEstimates
+%   unreparamaterizedErrorBars - this is a vector of the estimated error bars
+%   for the mutual information estimates stored in unreparamaterizedEstimates
 %
-% reparamaterizedEstimates - this is equivalent to
-% unreparamaterizedEstimates, but estimates were done after
-% reparamaterizing the data
+%   reparamaterizedEstimates - this is equivalent to
+%   unreparamaterizedEstimates, but estimates were done after
+%   reparamaterizing the data
 %
-% reparamaterizedErrorBars - this is equivalent to
-% unreparamaterizedErrorBars, but for reparamaterized data
+%   reparamaterizedErrorBars - this is equivalent to
+%   unreparamaterizedErrorBars, but for reparamaterized data
 %
 %-----------------------------------------------------------------------------------------
 % Copyright 2018 Caroline Holmes, Ilya Nemenman

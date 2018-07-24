@@ -1,34 +1,29 @@
-function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, reparamaterizedEstimates, ...
-    reparamaterizedErrorBars] = NFkappaBDataExample()
-%function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, reparamaterizedEstimates, ...
-%    reparamaterizedErrorBars] = NFkappaBDataExample()
+function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, ...
+    reparamaterizedEstimates, reparamaterizedErrorBars, mutualInformationAnalytical] = heavyTailExample()
+% 
+% function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, ...
+%    reparamaterizedEstimates, reparamaterizedErrorBars, mutualInformationAnalytical] = heavyTailExample()
 %
-% Runs through some different analyses of the NF-kB data - comparing k and N
-% dependence of mutual information estimates, and showing the effects of
-% reparameterization. The data set is described in more detail in Ref. [1].
-% Briefly, the data describe the joint activity of two transcription factors 
-% NF-kappaB and p-ATF-2 measured in 335 individual wildtype mouse fibroblast
-% cells 30 min after exposure to the tumor necrosis factor (TNF) ligand at 
-% the concentration of 1.3 ng/mL. The two transcription factors are 
-% activated downstream of the same TNF receptor, and hence their activity 
-% is correlated. The mutual information between these two sets quantifies 
-% this relation. 
+% This is an example of the effects of reparamaterization, using an extreme
+% case with very heavy-tailed data. This is similar to Ref. [1],
+% Fig. 4. Note that the form of the k and N dependence may depend on 
+% on exactly which sample points are generated -- in long-tailed data, a
+% few outliers can have a dra.
 %
-% Returned values:
-%   ks - this is the list of k values used
+% ks - this is the list of k values used
 %
-%   unreparamaterizedEstimates - this is a vector of the estimated mutual
-%   information at the values of k, for the full data set size.
+% unreparamaterizedEstimates - this is a vector of the estimated mutual
+% information at the values of k, for the full data set size.
 %
-%   unreparamaterizedErrorBars - this is a vector of the estimated error bars
-%   for the mutual information estimates stored in unreparamaterizedEstimates
+% unreparamaterizedErrorBars - this is a vector of the estimated error bars
+% for the mutual information estimates stored in unreparamaterizedEstimates
 %
-%   reparamaterizedEstimates - this is equivalent to unreparamaterizedEstimates,
-%   but estimates were done after reparamaterizing the data into marginal
-%   standard normals.
+% reparamaterizedEstimates - this is equivalent to
+% unreparamaterizedEstimates, but estimates were done after
+% reparamaterizing the data
 %
-%   reparamaterizedErrorBars - this is equivalent to 
-%   unreparamaterizedErrorBars, but for the reparamaterized data.
+% reparamaterizedErrorBars - this is equivalent to
+% unreparamaterizedErrorBars, but for reparamaterized data
 %
 %-----------------------------------------------------------------------------------------
 % Copyright 2018 Caroline Holmes, Ilya Nemenman
@@ -58,23 +53,27 @@ function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, reparamate
 %
 % in your published research.
 
-load('NFkappaBData.mat')
+
+
+%We want data where we can easily analytically calculate the mutual information,
+%so we will take a reparamaterized bivariate gaussian. Here, X is
+%log-normal distributed, while Y is even more heavy-tailed
+correlation = 0.5;
+N = 10000;
+
+x1 = normrnd(0, 1, N, 1);
+x2 = normrnd(0, 1, N, 1);
+x3 = correlation .* x1 + (1 - correlation^2)^.5 .* x2;
+X = [exp(x1)];
+Y = [exp(exp(x3))]; 
+mutualInformationAnalytical = log2((1/(1-correlation^2)).^.5);
 
 
 
-%First, let's generate some basic plots, showing the dependence of the
-%mutual information estimate on N and k
-listOfKs = [1 2 3 4 5 7 10 15 20];
-listSplitSizes = [1:10];
-findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, 1, 0, 1);
 
 
-
-
-
-%Instead, we could make a single plot similar to figure 7 in Holmes &
-%Nemenman.
-ks = [1 3 20]; %to put it all on one plot, we need a shorter list of ks.
+ks = [1 3 20]; %this are the values of k we're using
+listSplitSizes = [1:10]; %this is a standard choice
 
 %for each k, we need a list of values of the mutual information and error
 %bars for those values.
@@ -100,7 +99,8 @@ xlabel('Number of divisions of the data')
 ylabel('Estimated Mutual Information')
 legend(horzcat('k = ', num2str(ks(1))), horzcat('k = ', num2str(ks(2))),horzcat('k = ', num2str(ks(3))))
 title('N-dependence, unreparameterized data')
-ylim([0 1])
+plot([0 11], [mutualInformationAnalytical mutualInformationAnalytical], 'k')
+xlim([0 11])
 
 unreparamaterizedEstimates = means(:,1);
 unreparamaterizedErrorBars = stds(:,1);
@@ -129,7 +129,8 @@ xlabel('Number of divisions of the data')
 ylabel('Estimated Mutual Information')
 legend(horzcat('k = ', num2str(ks(1))), horzcat('k = ', num2str(ks(2))),horzcat('k = ', num2str(ks(3))))
 title('N-dependence, reparameterized data')
-ylim([0 1])
+plot([0 11], [mutualInformationAnalytical mutualInformationAnalytical], 'k')
+xlim([0 11])
 
 reparamaterizedEstimates = means(:,1);
 reparamaterizedErrorBars = stds(:,1);

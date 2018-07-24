@@ -25,13 +25,6 @@
 % Phys. Rev. E 69 (6) 066138, 2004
 %
 % in your published research.
-% 
-% Minor modification to $PATH variables by 
-%
-% Holmes, C.M. & Nemenman, I.  Estimation of mutual information for
-% real-valued data with error bars and controlled bias. 
-% Submitted, 2018.
-%
 
 
 function miout=MIxnyn(x,y,kneig);
@@ -78,7 +71,7 @@ save zwspMIxnyn.txt zwsp -ASCII
 
 
 % execute C Programm
-[a unout]=unix(['MIxnyn zwspMIxnyn.txt ',num2str(Ndx),' ',num2str(Ndy),' ',num2str(N),' ',num2str(kneig)]);
+[a unout]=unix(['/Users/ilya/GitHub/ContinuousEntropyEstimation/kraskovStoegbauerGrassberger/MIxnyn zwspMIxnyn.txt ',num2str(Ndx),' ',num2str(Ndy),' ',num2str(N),' ',num2str(kneig)]);
 miout=str2num(unout);
 
 

@@ -13,7 +13,7 @@ function [transformedValues] = reparameterize_data(listOfValues)
 % instead, it just changes the distances along the axis.
 %
 %-----------------------------------------------------------------------------------------
-% Copyright 2018 Caroline Holmes, Ilya Nemenman
+% Copyright 2018, 2019 Caroline Holmes, Ilya Nemenman
 %-----------------------------------------------------------------------------------------
 % This program is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ function [transformedValues] = reparameterize_data(listOfValues)
 % 
 % Holmes, C.M. & Nemenman, I.  Estimation of mutual information for
 % real-valued data with error bars and controlled bias. 
-% Submitted, 2018.
+% Submitted, 2019.
 %
 % A. Kraskov, H. Stogbauer, and P. Grassberger,
 % Estimating mutual information.

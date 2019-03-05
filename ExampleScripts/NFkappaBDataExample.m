@@ -31,7 +31,7 @@ function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, reparamate
 %   unreparamaterizedErrorBars, but for the reparamaterized data.
 %
 %-----------------------------------------------------------------------------------------
-% Copyright 2018 Caroline Holmes, Ilya Nemenman
+% Copyright 2018, 2019 Caroline Holmes, Ilya Nemenman
 %-----------------------------------------------------------------------------------------
 % This program is free software: you can redistribute it and/or modify
 % it under the terms of the GNU General Public License as published by

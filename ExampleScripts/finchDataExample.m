@@ -1,4 +1,4 @@
-function [] = finchDataAnalysis()
+function [] = finchDataExample()
 %Runs through some different analyses of the Bengalese Finch data - comparing k and N
 %dependence of mutual information estimates, and showing the effects of
 %reparameterization.

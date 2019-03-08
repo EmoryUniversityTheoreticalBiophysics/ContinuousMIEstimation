@@ -50,72 +50,71 @@ end
 
 if min(size(listOfValues)) == 1
 
-%reorder the data:
+    %reorder the data:
 
 
-ordering = randperm(length(listOfValues));
-newListOfValues = listOfValues(ordering);
+    ordering = randperm(length(listOfValues));
+    newListOfValues = listOfValues(ordering);
 
 
-[A,I] = sort(newListOfValues); 
+    [A,I] = sort(newListOfValues); 
 
-listPositions = zeros(length(listOfValues),1);
+    listPositions = zeros(length(listOfValues),1);
 
-for i = 1:length(listOfValues)
-    listPositions(I(i)) = i;
-end
+    for i = 1:length(listOfValues)
+        listPositions(I(i)) = i;
+    end
 
-%reassign to be in range where can use erfinv: need to be between -1 and 1.
+    %reassign to be in range where can use erfinv: need to be between -1 and 1.
 
+    listPositions = listPositions-mean(listPositions);
+    listPositions = 2.*listPositions./(length(listPositions));
 
-listPositions = listPositions-mean(listPositions);
-listPositions = 2.*listPositions./(length(listPositions));
-
-randOrdering_transformedValues = erfinv(listPositions);
-
-transformedValues = zeros(size(listOfValues));
-%return to the original ordering
-for i = 1:length(listOfValues)
-    transformedValues(ordering(i)) = randOrdering_transformedValues(i);
-end
+    randOrdering_transformedValues = erfinv(listPositions);
+    
+    transformedValues = zeros(size(listOfValues));
+    %return to the original ordering
+    for i = 1:length(listOfValues)
+        transformedValues(ordering(i)) = randOrdering_transformedValues(i);
+    end
 
 else
-% for the case where we have multiple dimensions. Essentially, this just
-% loops through the above behaviour, operating on each dimension
-% independently.
+    % for the case where we have multiple dimensions. Essentially, this just
+    % loops through the above behaviour, operating on each dimension
+    % independently.
     
-x2 = zeros(size(listOfValues));
-input = listOfValues;
-for iiii = 1:min(size(input)) 
-    listOfValues = input(:,iiii);
-    ordering = randperm(length(listOfValues));
-newListOfValues = listOfValues(ordering);
+    x2 = zeros(size(listOfValues));
+    input = listOfValues;
+    for iiii = 1:min(size(input)) 
+        listOfValues = input(:,iiii);
+        ordering = randperm(length(listOfValues));
+        newListOfValues = listOfValues(ordering);
 
 
-[A,I] = sort(newListOfValues); 
+        [A,I] = sort(newListOfValues); 
 
-listPositions = zeros(length(listOfValues),1);
+        listPositions = zeros(length(listOfValues),1);
 
-for i = 1:length(listOfValues)
-    listPositions(I(i)) = i;
-end
+        for i = 1:length(listOfValues)
+            listPositions(I(i)) = i;
+        end
 
-%reassign to be in range where can use erfinv: need to be between -1 and 1.
+        %reassign to be in range where can use erfinv: need to be between -1 and 1.
 
 
-listPositions = listPositions-mean(listPositions);
-listPositions = 2.*listPositions./(length(listPositions));
+        listPositions = listPositions-mean(listPositions);
+        listPositions = 2.*listPositions./(length(listPositions));
 
-randOrdering_transformedValues = erfinv(listPositions);
+        randOrdering_transformedValues = erfinv(listPositions);
 
-transformedValues = zeros(size(listOfValues));
-%return to the original ordering
-for i = 1:length(listOfValues)
-    transformedValues(ordering(i)) = randOrdering_transformedValues(i);
-end
-x2(:,iiii) = transformedValues;
-end
-transformedValues = x2;
+        transformedValues = zeros(size(listOfValues));
+        %return to the original ordering
+        for i = 1:length(listOfValues)
+            transformedValues(ordering(i)) = randOrdering_transformedValues(i);
+        end
+        x2(:,iiii) = transformedValues;
+    end
+    transformedValues = x2;
     
 end
 end

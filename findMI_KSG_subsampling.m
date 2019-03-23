@@ -14,7 +14,7 @@ function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot)
 % 
 % listSplitSizes - 1-d vector of required partitionings of the data when 
 % looking at the dependence of the mutual information on the data set size. 
-% For example, listSplitSizez = [1,2,3] means that we want to estimate the
+% For example, listSplitSizes = [1,2,3] means that we want to estimate the
 % information from the whole data, then from two non-overlapping subsets of 
 % the data, each of size N/2, and then from three non-obverlapping subsets 
 % each of size N/3. The first element of listSplitSizes should always be 1.
@@ -57,6 +57,14 @@ function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot)
 %
 % in your published research.
 
+if size(X,2) > size(X,1)
+    X = X';
+end
+if size(Y,2) > size(Y,1)
+    Y = Y';
+end
+
+
 n = length(listSplitSizes); 
 MIs = cell(n,2);
 
@@ -80,8 +88,8 @@ for i = 1:n
                 %mutual information values for each data partition
                 
     for j = 1: nSplits %move through each of the subsets of equal size
-        xT = X(a(l(j) + 1:l(j+1))); % the 'X' values that belong to this subset
-        yT = Y(a(l(j) + 1:l(j+1))); % the 'Y' values that belong to this subset
+        xT = X(a(l(j) + 1:l(j+1)),:); % the 'X' values that belong to this subset
+        yT = Y(a(l(j) + 1:l(j+1)),:); % the 'Y' values that belong to this subset
         MI_T(j) = MIxnyn(xT,yT,kvalue); %call the KSG MI estimator function
     end
     MIs{i,2} = MI_T./log(2); %we need this log(2) to convert from nats to bits.

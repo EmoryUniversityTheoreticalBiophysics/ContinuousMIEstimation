@@ -1,4 +1,4 @@
-function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot)
+function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot,pathSave)
 
 % function [MIs] = findMI_KSG_subsampling(X,Y, kvalue, listSplitSizes, do_plot)
 % 
@@ -90,7 +90,7 @@ for i = 1:n
     for j = 1: nSplits %move through each of the subsets of equal size
         xT = X(a(l(j) + 1:l(j+1)),:); % the 'X' values that belong to this subset
         yT = Y(a(l(j) + 1:l(j+1)),:); % the 'Y' values that belong to this subset
-        MI_T(j) = MIxnyn(xT,yT,kvalue); %call the KSG MI estimator function
+        MI_T(j) = MIxnyn_matlab(xT,yT,kvalue,pathSave); %call the KSG MI estimator function
     end
     MIs{i,2} = MI_T./log(2); %we need this log(2) to convert from nats to bits.
     means(i) = mean(MIs{i,2}); %mean value of MIs of partitions of this size

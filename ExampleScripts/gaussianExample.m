@@ -57,6 +57,13 @@ function [listOfKs, mutualInformationEstimates, errorBars, mutualInformationAnal
 % in your published research.
 
 
+% Compile the C code:
+mex MIxnyn.C
+
+% Set path for temporary file:
+pathToSave = pwd;
+
+
 muX = 0;         %X mean of the bivariate gaussian
 muY = 0;         %Y mean of the bivariate gaussian
 sigmaX = 1;      %X standard deviation   
@@ -81,7 +88,7 @@ disp(horzcat('Analytical value of the mutual information = ', num2str(mutualInfo
 %now we will do the estimates. This will generate quite a lot of plots.
 listOfKs = [1 2 3 4 5 7 10 15 20]; %values of k in k-nearest neighbors to try
 listSplitSizes = [1 2 3 4 5 6 7 8 9 10]; %list of partitionings of data to try
-[values, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, 1, 1, 1); %runs the actual estimates. the last three entries determine whether or not various plots are generated during the estimation process.
+[values, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, 1, 1, 1, pathToSave); %runs the actual estimates. the last three entries determine whether or not various plots are generated during the estimation process.
 
 disp(horzcat('The values of k used are ', num2str(listOfKs)))
 disp(horzcat('Estimated values of mutual information at different k"s are ', num2str(values'), ' and standard deviations are ', num2str(errorBars')))

@@ -54,7 +54,11 @@ function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, ...
 %
 % in your published research.
 
+% Compile C code
+mex MIxnyn.C
 
+% Set path for temp files
+pathToSave = pwd;
 
 %We want data where we can easily analytically calculate the mutual information,
 %so we will take a reparamaterized bivariate gaussian. Here, X is
@@ -73,8 +77,19 @@ mutualInformationAnalytical = log2((1/(1-correlation^2)).^.5);
 
 
 
-ks = [1 3 20]; %this are the values of k we're using
+ks = [1 2 3 4 5 20]; %this are the values of k we're using
 listSplitSizes = [1:10]; %this is a standard choice
+
+
+[values, errorBars] = findMI_KSG_bias_kN(X,Y,ks, listSplitSizes, 1, 1, 1, pathToSave); %run MI estimation
+
+figure;
+plot(ks, values, errorbars)
+xlabel('K')
+ylabel('MI')
+
+%%
+% alternatively, we could call findMI_KSG_subsampling, which will give us the results from the subsampling individually for each K. 
 
 %for each k, we need a list of values of the mutual information and error
 %bars for those values.
@@ -84,7 +99,7 @@ stds = zeros(length(ks), length(listSplitSizes));
 %instead of calling findMI_KSG_bias_kN.m, we can directly call
 %findMI_KSG_subsampling.
 for i = 1:length(ks)
-    [MIs] = findMI_KSG_subsampling(X,Y, ks(i), listSplitSizes, 0);
+    [MIs] = findMI_KSG_subsampling(X,Y, ks(i), listSplitSizes, 0, pathToSave);
     for j = 1:length(listSplitSizes)
         means(i,j) = mean(MIs{j,2});
         stds(i,j) = std(MIs{j,2});
@@ -114,7 +129,7 @@ unreparamaterizedErrorBars = stds(:,1);
 
 %and now we can generate a similar plot, using the reparameterized data
 for i = 1:length(ks)
-    [MIs] = findMI_KSG_subsampling(X2,Y2, ks(i), listSplitSizes, 0);
+    [MIs] = findMI_KSG_subsampling(X2,Y2, ks(i), listSplitSizes, 0,pathToSave);
     for j = 1:length(listSplitSizes)
         means(i,j) = mean(MIs{j,2});
         stds(i,j) = std(MIs{j,2});

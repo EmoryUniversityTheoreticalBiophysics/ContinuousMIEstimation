@@ -60,13 +60,17 @@ function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, reparamate
 
 load('NFkappaBData.mat')
 
+% Compile the C code:
+mex MIxnyn.C
 
+% Set path for temporary file:
+pathToSave = pwd;
 
 %First, let's generate some basic plots, showing the dependence of the
 %mutual information estimate on N and k
 listOfKs = [1 2 3 4 5 7 10 15 20];
 listSplitSizes = [1:10];
-findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, 1, 0, 1);
+[values errorbars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, 1, 0, 1, pathToSave);
 
 
 
@@ -74,7 +78,7 @@ findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, 1, 0, 1);
 
 %Instead, we could make a single plot similar to figure 7 in Holmes &
 %Nemenman.
-ks = [1 3 20]; %to put it all on one plot, we need a shorter list of ks.
+ks = [1:10 15 20]; %to put it all on one plot, we need a shorter list of ks.
 
 %for each k, we need a list of values of the mutual information and error
 %bars for those values.
@@ -84,7 +88,7 @@ stds = zeros(length(ks), length(listSplitSizes));
 %instead of calling findMI_KSG_bias_kN.m, we can directly call
 %findMI_KSG_subsampling.
 for i = 1:length(ks)
-    [MIs] = findMI_KSG_subsampling(X,Y, ks(i), listSplitSizes, 0);
+    [MIs] = findMI_KSG_subsampling(X,Y, ks(i), listSplitSizes, 0, pathToSave);
     for j = 1:length(listSplitSizes)
         means(i,j) = mean(MIs{j,2});
         stds(i,j) = std(MIs{j,2});
@@ -113,7 +117,7 @@ unreparamaterizedErrorBars = stds(:,1);
 
 %and now we can generate a similar plot, using the reparameterized data
 for i = 1:length(ks)
-    [MIs] = findMI_KSG_subsampling(X2,Y2, ks(i), listSplitSizes, 0);
+    [MIs] = findMI_KSG_subsampling(X2,Y2, ks(i), listSplitSizes, 0, pathToSave);
     for j = 1:length(listSplitSizes)
         means(i,j) = mean(MIs{j,2});
         stds(i,j) = std(MIs{j,2});

@@ -55,6 +55,12 @@ function [ks, unreparamaterizedEstimates, unreparamaterizedErrorBars, reparamate
 %
 % in your published research.
 
+% Compile C code
+mex MIxnyn.C
+
+% Set path for temp files
+pathToSave = pwd;
+
 load('finchData.mat')
 
 
@@ -79,9 +85,9 @@ means = zeros(length(ks), length(listSplitSizes));
 stds = zeros(length(ks), length(listSplitSizes));
 
 %instead of calling findMI_KSG_bias_kN.m, we can directly call
-%findMI_KSG_subsampling.
+%findMI_KSG_subsampling. This is not necessary, but allows us to look at different variables
 for i = 1:length(ks)
-    [MIs] = findMI_KSG_subsampling(X,Y, ks(i), listSplitSizes, 0);
+    [MIs] = findMI_KSG_subsampling(X,Y, ks(i), listSplitSizes, 0, pathToSave);
     for j = 1:length(listSplitSizes)
         means(i,j) = mean(MIs{j,2});
         stds(i,j) = std(MIs{j,2});
@@ -110,7 +116,7 @@ unreparamaterizedErrorBars = stds(:,1);
 
 %and now we can generate a similar plot, using the reparameterized data
 for i = 1:length(ks)
-    [MIs] = findMI_KSG_subsampling(X2,Y2, ks(i), listSplitSizes, 0);
+    [MIs] = findMI_KSG_subsampling(X2,Y2, ks(i), listSplitSizes, 0,pathToSave);
     for j = 1:length(listSplitSizes)
         means(i,j) = mean(MIs{j,2});
         stds(i,j) = std(MIs{j,2});

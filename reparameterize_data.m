@@ -15,7 +15,9 @@
 %-----------------------------------------------------------------------------------------
 % Please reference
 % 
-%(OUR PAPER)
+% Holmes, C.M. & Nemenman, I.  Estimation of mutual information for
+% real-valued data with error bars and controlled bias. 
+% Phys. Rev. E, 2019.
 %
 % A. Kraskov, H. Stogbauer, and P. Grassberger,
 % Estimating mutual information.

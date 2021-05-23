@@ -1,4 +1,4 @@
-function [means, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, do_plot, do_plot_stddev, do_plot_subsampling)
+function [means, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, do_plot, do_plot_stddev, do_plot_subsampling, pathSave)
 
 % function [means, errorBars] = findMI_KSG_bias_kN(X,Y,listOfKs, listSplitSizes, do_plot, do_plot_stddev, do_plot_subsampling)
 %
@@ -64,7 +64,7 @@ N = length(X);      %We do not check that X and Y are of the same size;
         % this is done by MIxnyn
 
 for i = 1:length(listOfKs) %for each k value, find the values of the information and the error estimates
-    [MIs] = findMI_KSG_subsampling(X,Y, listOfKs(i), listSplitSizes, do_plot_subsampling);
+    [MIs] = findMI_KSG_subsampling(X,Y, listOfKs(i), listSplitSizes, do_plot_subsampling,pathSave);
     means(i) = mean(MIs{1,2});
     errorBars(i) = findMI_KSG_stddev(MIs, N, do_plot_stddev); 
 end
